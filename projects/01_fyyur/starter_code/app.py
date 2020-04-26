@@ -24,7 +24,7 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# TODO: connect to a local postgresql database DONE
+# DONE: connect to a local postgresql database DONE
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -53,7 +53,7 @@ class Venue(db.Model):
     seeking_description = db.Column(db.String(500))
     artists = db.relationship('Show', backref=db.backref('Venue', lazy=True))
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate DONE
+    # DONE: implement any missing fields, as a database migration using Flask-Migrate DONE
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -71,9 +71,9 @@ class Artist(db.Model):
     seeking_description = db.Column(db.String(500))
     venues = db.relationship('Show', backref=db.backref('Artist', lazy=True))
 
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate DONE
+    # DONE: implement any missing fields, as a database migration using Flask-Migrate DONE
 
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration. DONE
+# DONE Implement Show and Artist models, and complete all model relationships and properties, as a database migration. DONE
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -103,7 +103,7 @@ def index():
 
 @app.route('/venues')
 def venues():
-  # TODO: replace with real venues data. DONE
+  # DONE: replace with real venues data. DONE
   #       num_shows should be aggregated based on number of upcoming shows per venue.
   cities = Venue.query.with_entities(func.count(Venue.id), Venue.city, Venue.state).group_by(Venue.city, Venue.state).all()
   data =[]
@@ -129,7 +129,7 @@ def venues():
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive.DONE
+  # DONE: implement search on artists with partial string search. Ensure it is case-insensitive.DONE
   # seach for Hop should return "The Musical Hop".
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
   search_term = request.form.get('search_term','')
@@ -153,7 +153,7 @@ def search_venues():
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
-  # TODO: replace with real venue data from the venues table, using venue_id DONE
+  # DONE: replace with real venue data from the venues table, using venue_id DONE
   venue = Venue.query.get(venue_id)
 
   upcoming_shows_data = Show.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time>datetime.now()).all()
@@ -207,8 +207,8 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-  # TODO: insert form data as a new Venue record in the db, instead
-  # TODO: modify data to be the data object returned from db insertion
+  # DONE: insert form data as a new Venue record in the db, instead
+  # DONE: modify data to be the data object returned from db insertion
   error = False
   data = request.form
   try: 
@@ -249,14 +249,14 @@ def create_venue_submission():
   if not error:
     flash('Venue ' + data['name'] + ' was successfully listed!')
   # on successful db insert, flash success
-  # TODO: on unsuccessful db insert, flash an error instead. DONE
+  # DONE: on unsuccessful db insert, flash an error instead. DONE
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
   return render_template('pages/home.html')
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
-  # TODO: Complete this endpoint for taking a venue_id, and using DONE
+  # DONE: Complete this endpoint for taking a venue_id, and using DONE
   # SQLAlchemy ORM to delete a record. Handle cases where the session commit could fail.
   error = False
   try:
@@ -281,13 +281,13 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-  # TODO: replace with real data returned from querying the database
+  # DONE: replace with real data returned from querying the database
   data = Artist.query.all()
   return render_template('pages/artists.html', artists=data)
 
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
-  # TODO: implement search on artists with partial string search. Ensure it is case-insensitive. DONE
+  # DONE: implement search on artists with partial string search. Ensure it is case-insensitive. DONE
   # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
   # search for "band" should return "The Wild Sax Band".
 
@@ -312,7 +312,7 @@ def search_artists():
 @app.route('/artists/<int:artist_id>')
 def show_artist(artist_id):
   # shows the venue page with the given venue_id
-  # TODO: replace with real venue data from the venues table, using venue_id
+  # DONE: replace with real venue data from the venues table, using venue_id
   artist = Artist.query.get(artist_id)
   past_shows_data = Show.query.join(Venue).filter(Show.artist_id==artist_id).filter(Show.start_time<datetime.now()).all()
   past_shows = []
@@ -372,12 +372,12 @@ def edit_artist(artist_id):
   form.website.data = artist.website
   form.seeking_venue.data = artist.seeking_venue
   form.seeking_description.data = artist.seeking_description
-  # TODO: populate form with fields from artist with ID <artist_id>
+  # DONE: populate form with fields from artist with ID <artist_id>
   return render_template('forms/edit_artist.html', form=form, artist=artist)
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
-  # TODO: take values from the form submitted, and update existing DONE
+  # DONE: take values from the form submitted, and update existing DONE
   # artist record with ID <artist_id> using the new attributes
   error = False  
   artist = Artist.query.get(artist_id)
@@ -422,12 +422,12 @@ def edit_venue(venue_id):
   form.website.data = venue.website
   form.seeking_talent.data = venue.seeking_talent
   form.seeking_description.data = venue.seeking_description
-  # TODO: populate form with values from venue with ID <venue_id>
+  # DONE: populate form with values from venue with ID <venue_id>
   return render_template('forms/edit_venue.html', form=form, venue=venue)
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-  # TODO: take values from the form submitted, and update existing
+  # DONE: take values from the form submitted, and update existing DONE
   # venue record with ID <venue_id> using the new attributes
   error = False  
   venue = Venue.query.get(venue_id)
@@ -469,12 +469,47 @@ def create_artist_form():
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
   # called upon submitting the new artist listing form
-  # TODO: insert form data as a new Venue record in the db, instead
-  # TODO: modify data to be the data object returned from db insertion
+  # TODO: insert form data as a new Venue record in the db, instead DONE
+  # TODO: modify data to be the data object returned from db insertion DONE
+  error = False
+  data = request.form
+  try: 
+    name = data['name']
+    city = data['city']
+    state = data['state']
+    phone = data['phone']
+    genres = data.getlist('genres'),
+    facebook_link = data['facebook_link']
+    image_link = data['image_link']
+    website = data['website']
+    seeking_venue = True if 'seeking_venue' in data else False
+    seeking_description = data['seeking_description']
 
+    artist = Artist(name=name, 
+                    city=city, 
+                    state=state,
+                    phone=phone, 
+                    genres=genres, 
+                    facebook_link=facebook_link, 
+                    image_link=image_link, 
+                    website=website, 
+                    seeking_venue=seeking_venue, 
+                    seeking_description=seeking_description)
+
+    db.session.add(artist)
+    db.session.commit()
+  except: 
+    error = True
+    db.session.rollback()
+    print(sys.exc_info())
+  finally: 
+    db.session.close()
+  if error: 
+    flash('An error occurred. Artist ' + data['name']+ ' could not be listed.')
+  if not error: 
+    flash('Artist ' + data['name'] + ' was successfully listed!')
   # on successful db insert, flash success
-  flash('Artist ' + request.form['name'] + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
+  # TODO: on unsuccessful db insert, flash an error instead. DONE
   # e.g., flash('An error occurred. Artist ' + data.name + ' could not be listed.')
   return render_template('pages/home.html')
 
