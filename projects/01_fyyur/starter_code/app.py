@@ -150,7 +150,7 @@ def search_venues():
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
-  # TODO: replace with real venue data from the venues table, using venue_id
+  # TODO: replace with real venue data from the venues table, using venue_id DONE
   venue = Venue.query.get(venue_id)
 
   upcoming_shows_data = Show.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time>datetime.now()).all()
@@ -206,10 +206,47 @@ def create_venue_form():
 def create_venue_submission():
   # TODO: insert form data as a new Venue record in the db, instead
   # TODO: modify data to be the data object returned from db insertion
+  error = False
+  data = request.form
+  try: 
+    name = data['name']
+    city = data['city']
+    state = data['state']
+    address = data['address']
+    phone = data['phone']
+    image_link = data['image_link']
+    facebook_link = data['facebook_link']
+    genres = data.getlist('genres')
+    website = data['website']
+    seeking_talent = True if 'seeking_talent' in data else False 
+    seeking_description = data['seeking_description']
 
+    venue = Venue(name=name, 
+                  city=city, 
+                  state=state, 
+                  address=address, 
+                  phone=phone,  
+                  facebook_link=facebook_link, 
+                  image_link=image_link, 
+                  website=website, 
+                  genres=genres,
+                  seeking_talent=seeking_talent, 
+                  seeking_description=seeking_description)
+    db.session.add(venue)
+    db.session.commit()
+  except: 
+    error = True
+    db.session.rollback()
+    print(sys.exc_info())
+  finally: 
+    db.session.close()
+
+  if error: 
+    flash('An error occurred. Venue ' + data['name']+ ' could not be listed.')
+  if not error:
+    flash('Venue ' + data['name'] + ' was successfully listed!')
   # on successful db insert, flash success
-  flash('Venue ' + request.form['name'] + ' was successfully listed!')
-  # TODO: on unsuccessful db insert, flash an error instead.
+  # TODO: on unsuccessful db insert, flash an error instead. DONE
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
   return render_template('pages/home.html')
