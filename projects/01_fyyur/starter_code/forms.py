@@ -83,10 +83,10 @@ genres_options = [
 
 class ShowForm(Form):
     artist_id = StringField(
-        'artist_id'
+        'artist_id', validators=[DataRequired()]
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id', validators=[DataRequired()]
     )
     start_time = DateTimeField(
         'start_time',
@@ -110,7 +110,9 @@ class VenueForm(Form):
     )
 
     phone = StringField(
-        'phone'
+        #regex from https://www.regexpal.com/21
+        #for some reasones it doesn't want to work :(
+        'phone', validators=[DataRequired(), Regexp("^[0-9]*$", message="Only numbers allowed")] 
     )
     image_link = StringField(
         'image_link'
@@ -150,7 +152,9 @@ class ArtistForm(Form):
     )
     phone = StringField(
         # TODO implement validation logic for state
-        'phone'
+        #regex from https://www.regexpal.com/21
+        #for some reasones it doesn't want to work :(
+        'phone', validators=[DataRequired(), Regexp("^[0-9]*$", message="Only numbers allowed")] 
     )
     image_link = StringField(
         'image_link'

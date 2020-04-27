@@ -31,6 +31,8 @@ migrate = Migrate(app, db)
 # Models.
 #----------------------------------------------------------------------------#
 
+# I had problems with assosiate tabe I couldn't make any query with it since it throw exptions 
+# What I made in one to many for one artist has many shows and one venue has many show
 class Show(db.Model):
     __tablename__ = 'shows'
     id = db.Column(db.Integer, primary_key=True)
