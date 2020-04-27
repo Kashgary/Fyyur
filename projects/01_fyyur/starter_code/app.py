@@ -139,6 +139,7 @@ def search_venues():
   results = Venue.query.filter(Venue.name.like(f'%{search_term}%')).all()
   count = len(results)
   data =[]
+  #orgnizing the data
   for result in results:
     show_data = Show.query.filter(Show.venue_id==venue.id).filter(Show.start_time>datetime.now()).all()
     num_upcoming_shows = len(show_data)
@@ -164,6 +165,7 @@ def show_venue(venue_id):
 
   past_shows_data = Show.query.join(Artist).filter(Show.venue_id==venue_id).filter(Show.start_time<datetime.now()).all()
   past_shows = []
+  #orgnizing the data
   for show in upcoming_shows_data:
     upcoming_shows.append({
       "artist_id": show.artist_id,
@@ -171,7 +173,7 @@ def show_venue(venue_id):
       "artist_image_link": show.Artist.image_link,
       "start_time": show.start_time.strftime("%Y-%m-%d %H:%M:%S")    
     })
-
+  #orgnizing the data
   for show in past_shows_data:
     past_shows.append({
       "artist_id": show.artist_id,
@@ -298,7 +300,7 @@ def search_artists():
   results = Artist.query.filter(Artist.name.like(f'%{search_term}%')).all()
   count = len(results)
   data = []
-
+  #orgnizing the data
   for result in results:
     data.append({
       "id": result.id,
@@ -322,7 +324,7 @@ def show_artist(artist_id):
 
   upcoming_shows_data = Show.query.join(Venue).filter(Show.artist_id==artist_id).filter(Show.start_time>datetime.now()).all()
   upcoming_shows = []
-
+  #orgnizing the data
   for show in past_shows_data:
     past_shows.append({
       "venue_id": show.venue_id,
@@ -330,7 +332,7 @@ def show_artist(artist_id):
       "artist_image_link": show.Venue.image_link,
       "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
     })
-    
+  #orgnizing the data  
   for show in upcoming_shows_data:
     upcoming_shows.append({
       "venue_id": show.venue_id,
